@@ -2,7 +2,6 @@ import React, { useCallback, useContext } from 'react';
 //Components
 import IsLoggedIn from '../../Authentication/IsLoggedIn';
 import NavigationItem from './NavigationItem';
-import PrimaryUserProtected from '../../Screens/PrimaryUserProtected';
 //Styled components
 import { NavigationContainer } from './Navigation.styles';
 //Context
@@ -43,24 +42,6 @@ const Navigation: React.FC<NavigationProps> = ({ navigation }) => {
                     section = 'Home'
                     onPress = { handleNavigation }
                     sectionLabel = 'Inicio'
-                    showSectionLabel
-                />
-                <PrimaryUserProtected>
-                    <NavigationItem 
-                        icon = 'microchip'
-                        active = { isActive('Devices') }
-                        section = 'Devices'
-                        onPress = { handleNavigation }
-                        sectionLabel = 'Dispositivos'
-                        showSectionLabel
-                    />
-                </PrimaryUserProtected>
-                <NavigationItem 
-                    icon = 'comments'
-                    active = { isActive('Chat') }
-                    section = 'Chat'
-                    onPress = { handleNavigation }
-                    sectionLabel = 'Chat'
                     showSectionLabel
                 />
                 <NavigationItem 

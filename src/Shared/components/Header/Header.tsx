@@ -1,20 +1,14 @@
 
 import React from 'react';
-//Components
-import HeaderActions from './HeaderActions/HeaderActions';
-//Styled components
-import { HeaderContainer, HeaderLogo, HeaderTitle } from './Header.styles';
-import { HeaderBackButton } from '@react-navigation/stack'
 import { useNavigation } from '@react-navigation/core';
+import { HeaderBackButton } from '@react-navigation/stack';
+//Styled components
+import { HeaderContainer, HeaderTitle } from './Header.styles';
 
 const Header: React.FC = () => (
     <HeaderContainer>
             <GoBackButton />
-            <HeaderLogo 
-                source = { require('../../../../assets/icon.png') }
-            />
-            <HeaderTitle>Elder</HeaderTitle>
-            <HeaderActions />
+            <HeaderTitle>Supervisión</HeaderTitle>
     </HeaderContainer>
 );
 

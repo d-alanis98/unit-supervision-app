@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
@@ -7,50 +7,26 @@ import Screens from './Screens';
 import StatusBar from './src/Shared/components/StatusBar/StatusBar';
 //Store
 import store from './src/Shared/store/store';
-import { useAppDispatch, useAppSelector } from './src/Shared/store/hooks';
-//Event handlers
-import OnUpdatedAuthToken from './src/UserAuthentication/domain/event-handlers/OnUpdatedAuthToken';
-//Error handlers
-import RequestErrorHandler from './src/Shared/infrastructure/Errors/RequestErrorHandler';
+import { useAppSelector } from './src/Shared/store/hooks';
+//Hooks
+import useAppServices from './src/Shared/hooks/useAppServices';
 //Theme
 import { ThemeProvider } from 'styled-components/native';
-//Services
-import AxiosRequest from './src/Shared/infrastructure/Requests/AxiosRequest';
 //Styles
 import styles from './App.styles';
 
+
 const App: React.FC = () => {
     //HOOKS
-    //Custom hooks
-    //State selector
-    const { token, loggedIn, refreshToken } = useAppSelector(state => state.user);
-    //Actions dispatcher
-    const dispatch = useAppDispatch();
-    //Effects
-    /**
-     * On mount, we want to register our services
-     */
-    useEffect(() => {
-        //We set some properties
-        AxiosRequest.token = token;
-        AxiosRequest.loggedIn = loggedIn;
-        AxiosRequest.baseURL = 'http://192.168.1.94:3000';
-        AxiosRequest.refreshToken = refreshToken;
-        AxiosRequest.onRequestError = new RequestErrorHandler(dispatch).handle;
-        AxiosRequest.onNewAuthToken = new OnUpdatedAuthToken(dispatch).handle;
-        //We set the axios instance (to set the interceptors)
-        AxiosRequest.setInstance();
-        
-    }, [token, loggedIn, refreshToken]);
-    //Custom hooks
     //Store, to get the redux state
     const { theme: themeToApply } = useAppSelector(state => state.theme);
+    //App services to register
+    useAppServices();
     //Render
     return (
         <ThemeProvider
             theme = { themeToApply }
         >
-            
             <View 
                 style = { styles.container }
             >    

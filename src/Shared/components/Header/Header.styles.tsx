@@ -13,7 +13,7 @@ export const HeaderContainer = styled.View`${({ theme }) => `
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     padding: 10px 20px;
     height: ${ HEADER_HEIGHT }px;
     background-color: ${ theme.secondaryColor };
@@ -21,7 +21,7 @@ export const HeaderContainer = styled.View`${({ theme }) => `
 
 export const HeaderTitle = styled.Text`${({ theme }) => `
     color: ${ theme.secondaryFontColor };
-    font-size: 20px;
+    font-size: 22px;
 `}`;
 
 const logoSize = HEADER_HEIGHT - 10;

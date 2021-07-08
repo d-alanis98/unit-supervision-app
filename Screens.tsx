@@ -3,13 +3,9 @@ import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 //Components
 import Login from './src/UserAuthentication/components/Login/Login';
-import Register from './src/UserAuthentication/components/Register/Register';
 import Navigation from './src/Shared/components/Navigation/components/Navigation';
 import HomeScreen from './src/User/components/HomeScreen/HomeScreen';
-import ChatScreen from './src/Chat/components/ChatScreen/ChatScreen';
 import SettingsScreen from './src/User/components/SettingsScreen/SettingsScreen';
-import IoTDeviceScreen from './src/IoTDevice/components/IoTDeviceScreen/IoTDeviceScreen';
-import NotificationsScreen from './src/User/components/NotificationsScreen/NotificationsScreen';
 //Hooks
 import { useAppSelector } from './src/Shared/store/hooks';
 //Context
@@ -54,29 +50,13 @@ const Screens: React.FC = () => {
                                 name = 'Settings'
                                 component = { SettingsScreen }
                             />
-                            <Screen 
-                                name = 'Chat'
-                                component = { ChatScreen }
-                            />
-                            <Screen 
-                                name = 'Devices'
-                                component = { IoTDeviceScreen }
-                            />
-                            <Screen 
-                                name = 'Notifications'
-                                component = { NotificationsScreen }
-                            />
                         </>
-                        : <>
+                        : (
                             <Screen 
                                 name = 'Login'
                                 component = { Login }
                             />
-                            <Screen 
-                                name = 'Register'
-                                component = { Register }
-                            />
-                        </>
+                        )
                 }
             </Navigator>
         </CurrentScreenContext.Provider>

@@ -4,15 +4,13 @@ import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import userReducer, { restoreSessionAction } from './reducers/userDuck';
 import chatReducer from './reducers/chatDuck';
 import themeReducer from './reducers/themeDuck';
-import devicesReducer from './reducers/devicesDuck';
-import deviceDataReducer from './reducers/deviceDataDuck';
+import supervisionReducer from './reducers/supervisionDuck';
 
 const rootReducer = combineReducers({
     user: userReducer,
     chat: chatReducer,
     theme: themeReducer,
-    devices: devicesReducer, 
-    deviceData: deviceDataReducer,
+    supervision: supervisionReducer
 });
 
 const generateStore = () => {

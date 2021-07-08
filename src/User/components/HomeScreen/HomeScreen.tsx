@@ -1,27 +1,31 @@
 import React from 'react';
-import { useFocusEffect } from '@react-navigation/core';
 //Components
+import UnitsList from '../../../Unit/components/UnitsList/UnitsList';
 import ScreenContainer from '../../../Shared/components/Screens/ScreenContainer';
-import PrimaryUserScreen from './PrimaryUser/PrimaryUserScreen';
-import PrimaryUserProtected from '../../../Shared/components/Screens/PrimaryUserProtected';
+import SupervisionForms from '../../../Supervision/components/SupervisionForms/SupervisionForms';
+//Hooks
+import useSupervision from '../../../Shared/store/hooks/supervision/useSupervision';
 
 
-const HomeScreen: React.FC = () => {
+const HomeScreen: React.FC = () => (
+    <ScreenContainer>
+        <SupervisionRenderer />
+    </ScreenContainer>
+);
+
+export default HomeScreen;
+
+/**
+ * Internal components
+ */
+const SupervisionRenderer: React.FC = () => {
     /**
      * Hooks
      */
-    //Focus effect (similar to useEffect(..., [])), executes the logic when the screen is focused
-    useFocusEffect(() => {
+    //Store
+    const { currentUnit } = useSupervision();
 
-    });
-
-    return (
-        <ScreenContainer>
-            <PrimaryUserProtected>
-                <PrimaryUserScreen />
-            </PrimaryUserProtected>
-        </ScreenContainer>
-    );
+    return currentUnit
+        ? <SupervisionForms />
+        : <UnitsList />;
 }
-
-export default HomeScreen;

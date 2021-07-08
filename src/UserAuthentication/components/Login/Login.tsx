@@ -1,26 +1,20 @@
 import React, { useCallback, useState } from 'react';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 //Components
 import Label from '../../../Shared/components/Layout/Labels/Label';
 import Button from '../../../Shared/components/Layout/Buttons/Button';
 import Divider from '../../../Shared/components/Layout/Divider/Divider';
-import PasswordInput from '../../../Shared/components/Layout/Input/PasswordInput/PasswordInput';
 //Actions
 import { loginAction } from '../../../Shared/store/reducers/userDuck';
 //Hooks
-import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch } from '../../../Shared/store/hooks';
 //Styled components
 import { LoginContainer, LoginFormContainer, LoginIllustration, LoginInput, RegisterLinkContainer } from './Login.styles';
-//Styles
-import { lightTheme } from '../../../Shared/components/Theme/constants/theme';
+
 
 const Login: React.FC = () => {
     //Hooks
     //Actions dispatcher
     const dispatch = useAppDispatch();
-    //Navigation
-    const navigation = useNavigation();
     //State
     const [credentials, setCredentials] = useState<Credentials>(initialCredentials);
 
@@ -35,33 +29,27 @@ const Login: React.FC = () => {
         });
     }, [credentials]);
 
-    const navigateToRegister = useCallback(() => {
-        navigation.navigate('Register');
-    }, [navigation]);
-
     return (
         <LoginContainer>
             <LoginFormContainer>
                 <LoginTitle>Iniciar sesión</LoginTitle>
 
-                <FormLabel>Correo electrónico: </FormLabel>
+                <FormLabel>Dominio de la empresa: </FormLabel>
                 <LoginInput 
-                    placeholder = 'Correo electrónico'
-                    onChangeText = { text => handleFieldChange('email', text) }
+                    placeholder = 'Dominio de la empresa'
+                    onChangeText = { text => handleFieldChange('domain', text) }
                 />
-                <FormLabel>Contraseña: </FormLabel>
-                <PasswordInput 
-                    placeholder = 'Contraseña'
-                    onChangeText = { text => handleFieldChange('password', text) }
+                <FormLabel>Número de empleado: </FormLabel>
+                <LoginInput 
+                    placeholder = 'Número de empleado'
+                    onChangeText = { text => handleFieldChange('employeeNumber', text) }
                 />
+
                 <FormSubmitButton 
                     submit = { submit }
                     credentials = { credentials }
                 />
                 <Divider />
-                <RegisterLink 
-                    navigateToRegister = { navigateToRegister }
-                />
             </LoginFormContainer>
             <LoginIllustration 
                 source = { require('../../../../assets/illustrations/pablo-816.png') }
@@ -94,30 +82,6 @@ const FormLabel: React.FC = ({ children }) => (
     </Label>
 );
 
-interface RegisterLinkProps {
-    navigateToRegister: () => void;
-}
-
-const RegisterLink: React.FC<RegisterLinkProps> = ({ navigateToRegister }) => (
-    <RegisterLinkContainer>
-        <Label>
-            ¿No tienes cuenta? 
-        </Label>
-        <TouchableOpacity
-            onPress = { navigateToRegister }
-        >
-            <Label
-                color = { lightTheme.primaryColor }
-                fontWeight = '500'
-                margin = '0 5px'
-                style = {{ marginTop: 'auto'}}
-            >
-                Crear una
-            </Label>
-        </TouchableOpacity>
-    </RegisterLinkContainer>
-    
-)
 
 interface SubmitButtonProps {
     submit: () => void;
@@ -133,7 +97,7 @@ const FormSubmitButton: React.FC<SubmitButtonProps> = ({
         width = '75%'
         margin = '20px'
         onPress = { submit }
-        disabled = { !credentials.email || !credentials.password }
+        disabled = { !credentials.employeeNumber || !credentials.domain }
         accessibilityLabel = 'Enviar formulario de login'
     >
         Enviar
@@ -143,8 +107,11 @@ const FormSubmitButton: React.FC<SubmitButtonProps> = ({
 //Helpers
 
 interface Credentials {
-    email: string;
-    password: string;
+    domain: string;
+    employeeNumber: string;
 }
 
-const initialCredentials = { email: '', password: ''};
+const initialCredentials: Credentials = { 
+    domain: '',
+    employeeNumber: ''
+};

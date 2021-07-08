@@ -4,8 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserData, ValidUserTypes } from '../../../User/domain/User';
 //Domain exceptions
 import SessionNotFound from '../../../UserAuthentication/domain/exceptions/SessionNotFound';
-//Infrastructure
-import { login } from '../../../UserAuthentication/infrastructure/userAuthenticationApi';
 //Thunk action base type
 import { ThunkAppAction } from '../store';
 
@@ -25,33 +23,22 @@ const LOGIN                 = 'LOGIN';
 const LOGOUT                = 'LOGOUT';
 const LOGIN_ERROR           = 'LOGIN_ERROR';
 const LOGIN_SUCCESS         = 'LOGIN_SUCCESS';
-const REFRESH_TOKEN_ERROR   = 'REFRESH_TOKEN_ERROR';
-const REFRESH_TOKEN_SUCCESS = 'REFRESH_TOKEN_SUCCESS';
 //Other constants
 const USER_KEY          = 'USER';
-const TOKEN_KEY         = 'TOKEN';
-const REFRESH_TOKEN_KEY = 'REFRESH_TOKEN';
 //Initial state
-interface UserState extends UserData {
-    name: string;
-    type: ValidUserTypes;
+interface UserState {
     error?: string;
-    token: string;
+    domain: string;
     loading: boolean;
     loggedIn: boolean;
-    lastName: string;
-    dateOfBirth: string;
+    employeeNumber: string;
 };
 
 const initialState: UserState = {
-    name: '',
-    type: ValidUserTypes.SECONDARY,
-    token: '',
+    domain: '',
     loading: false,
     loggedIn: false,
-    lastName: '',
-    dateOfBirth: '',
-    refreshToken: ''
+    employeeNumber: '',
 };
 
 /**
@@ -76,24 +63,11 @@ const reducer = (state = initialState, action: AnyAction) => {
                 loading: false,
             };
         case LOGIN_SUCCESS:
-            const userData: UserData = payload;
             return {
                 ...state,
-                ...userData,
                 loading: false,
                 loggedIn: true,
-            };
-        case REFRESH_TOKEN_ERROR:
-            return {
-                ...state,
-                error: payload,
-                token: '',
-                loggedIn: false,
-            };
-        case REFRESH_TOKEN_SUCCESS:
-            return {
-                ...state,
-                token: payload,
+                ...payload
             };
         default:
             return state;
@@ -112,21 +86,14 @@ export default reducer;
  * @param {FormData|Object} data The credentials object or form data.
  * @returns 
  */
-export let loginAction = (data: FormData | Object): ThunkAppAction<Promise<void>> => async dispatch => {
+export let loginAction = (data: any): ThunkAppAction<Promise<void>> => async dispatch => {
     try {
-        const { user, token, refreshToken } = await login(data);
         //We save the tokens in the storage
-        await AsyncStorage.setItem(USER_KEY, JSON.stringify(user));
-        await AsyncStorage.setItem(TOKEN_KEY, token);
-        await AsyncStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+        await AsyncStorage.setItem(USER_KEY, JSON.stringify(data));
         //We dispatch the login success action
         dispatch({
             type: LOGIN_SUCCESS,
-            payload: {
-                ...user,
-                token,
-                refreshToken
-            }
+            payload: data
         });
         
     } catch(error) {
@@ -145,22 +112,15 @@ export let loginAction = (data: FormData | Object): ThunkAppAction<Promise<void>
 export let restoreSessionAction = (): ThunkAppAction => async dispatch => {
     try {
         //We get the data from the local storage
-        const user = await AsyncStorage.getItem(USER_KEY);
-        const token = await AsyncStorage.getItem(TOKEN_KEY);
-        const refreshToken = await AsyncStorage.getItem(REFRESH_TOKEN_KEY);
+        const serializedData = await AsyncStorage.getItem(USER_KEY);
         //We validate the data existance
-        if(!user || !token || !refreshToken)
+        if(!serializedData)
             throw new SessionNotFound();
-        //We parse the user data
-        const parsedUser = JSON.parse(user);
+        const parsedData = JSON.parse(serializedData);
         //We dispatch the success action
         dispatch({
             type: LOGIN_SUCCESS,
-            payload: {
-                ...parsedUser,
-                token,
-                refreshToken
-            }
+            payload: parsedData
         });
     } catch(error) {
         dispatch({
@@ -170,27 +130,6 @@ export let restoreSessionAction = (): ThunkAppAction => async dispatch => {
     };
 }
 
-/**
- * Action to update the authorization token in both the state and the storage.
- * @param {string} newToken The new authorization token.
- * @returns 
- */
-export let updateAuthTokenAction = (newToken: string): ThunkAppAction => async dispatch => {
-    try {
-        await AsyncStorage.setItem(TOKEN_KEY, newToken);
-        //We dispatch the action with the new token as payload
-        dispatch({
-            type: REFRESH_TOKEN_SUCCESS,
-            payload: newToken,
-        });
-    } catch(error) {
-        dispatch({
-            type: REFRESH_TOKEN_ERROR,
-            payload: error.message,
-        });
-        //Set session expired action
-    }
-}
 
 /**
  * Action to logout the user, clears the state and the storage.
@@ -222,6 +161,4 @@ export let sessionExpiredAction = (): ThunkAppAction => (dispatch, getState) => 
  */
 const clearStorage = async () => {
     await AsyncStorage.removeItem(USER_KEY);
-    await AsyncStorage.removeItem(TOKEN_KEY);
-    await AsyncStorage.removeItem(REFRESH_TOKEN_KEY);
 }

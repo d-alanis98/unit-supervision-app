@@ -1,11 +1,9 @@
 import React from 'react';
-import Label from '../../../Shared/components/Layout/Labels/Label';
-import LabelWithIcon from '../../../Shared/components/Layout/Labels/LabelWithIcon/LabelWithIcon';
 //Components
+import ThemeSettings from './ThemeSettings/ThemeSettings';
 import ScreenContainer from '../../../Shared/components/Screens/ScreenContainer';
 //Styled components
 import { SettingsScreenContainer } from './SettingsScreen.styles';
-import ThemeSettings from './ThemeSettings/ThemeSettings';
 
 
 const SettingsScreen: React.FC = () => (
