@@ -128,7 +128,7 @@ export const getSupervisionUnitsAction = (): ThunkAppAction => async (dispatch, 
     }
 }
 
-export const setCurrentUnitAction = (unit: Unit): ThunkAppAction => (dispatch, _) => {
+export const setCurrentUnitAction = (unit: Unit | null): ThunkAppAction => (dispatch, _) => {
     dispatch({
         type: SET_CURRENT_SUPERVISION_UNIT,
         payload: unit,

@@ -28,7 +28,7 @@ const useSupervision = () => {
     } = useAppSelector(state => state.supervision);
 
     //Callbacks
-    const setCurrentUnit = useCallback((unit: Unit) => {
+    const setCurrentUnit = useCallback((unit: Unit | null) => {
         dispatch(setCurrentUnitAction(unit));
     }, [dispatch]);
 

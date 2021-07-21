@@ -52,7 +52,7 @@ const Login: React.FC = () => {
                 <Divider />
             </LoginFormContainer>
             <LoginIllustration 
-                source = { require('../../../../assets/illustrations/pablo-816.png') }
+                source = { require('../../../../assets/illustrations/clip-252.png') }
             />
         </LoginContainer>
     )

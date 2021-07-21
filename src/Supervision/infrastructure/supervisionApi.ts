@@ -11,7 +11,7 @@ export const getSupervisionFormData = async (
     supervisionFormId: number
 ) => {
     const response = await axios.get(
-        `${ app.apiPath }/${ domain }/supervision/${ supervisionFormId }`
+        `${ app.apiPath }/${ domain }/supervision/forms/${ supervisionFormId }`
     );
     if(!response)
         throw new SupervisionNotFound();

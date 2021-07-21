@@ -6,6 +6,10 @@ import {
     SupervisionFormsListItem, 
     SupervisionFormsListContainer,
 } from './SupervisionFormsList.styles';
+import { 
+    CurrentSupervisionFormRow,
+    ResetCurrentSupervisionFormIcon 
+} from '../CurrentSupervisionForm/CurrentSupervisionForm.styles';
 //Hooks
 import useSupervision from '../../../Shared/store/hooks/supervision/useSupervision';
 
@@ -17,12 +21,18 @@ const SupervisionFormsList: React.FC = () => {
     //Supervision
     const { 
         forms,
+        setCurrentUnit,
         setCurrentSupervisionForm
     } = useSupervision();
 
     return (
         <SupervisionFormsListContainer>
-            <Label>Formularios de inspección</Label>
+            <CurrentSupervisionFormRow>
+                <ResetCurrentSupervisionFormIcon
+                    onPress = { () => setCurrentUnit(null) }
+                />
+                <Label>Formularios de inspección</Label>
+            </CurrentSupervisionFormRow>
             {
                 forms.map(form => (
                     <SupervisionFormsListItem

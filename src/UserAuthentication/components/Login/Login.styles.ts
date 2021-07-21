@@ -34,8 +34,8 @@ export const LoginInput = styled.TextInput`${({ theme }) => `
 const illustrationSize = screenWidth / 1.5;
 export const LoginIllustration = styled.Image`
     position: absolute;
-    bottom: -35px;
-    left: 0;
+    bottom: 0px;
+    left: -20px;
     right: 0;
     justify-content: center;
     height: ${ illustrationSize }px;
